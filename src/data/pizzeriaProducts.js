@@ -7,7 +7,7 @@ export const pizzas = [
     name: "Muzzarella",
     category: "Pizzas",
     description: "Salsa de tomate, muzza, aceitunas y orégano.",
-    price: 5500,
+    price: 18000,
     img: "/images/pizzas/pizza-muzarella.png",
   },
   {
