@@ -24,8 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -66,8 +64,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-/* Barra flotante de WhatsApp en mobile */
-/* Barra flotante de WhatsApp en mobile + tablet */
+
+/* Barra flotante WhatsApp */
 .floating-wpp {
   position: fixed;
   left: 0;
@@ -84,12 +82,10 @@ button:focus-visible {
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
 }
 
-/* Texto "Ver menú / Ver mi pedido" */
 .floating-wpp-label {
   font-size: 0.95rem;
 }
 
-/* Chip blanco con carrito y total (mobile por defecto) */
 .floating-wpp-chip {
   background-color: #fff;
   color: #333;
@@ -101,7 +97,6 @@ button:focus-visible {
   gap: 6px;
 }
 
-/* Tablet: hacemos el chip un poquito más grande */
 @media (min-width: 768px) and (max-width: 991.98px) {
   .floating-wpp {
     padding: 0.9rem 1.5rem;
@@ -117,23 +112,19 @@ button:focus-visible {
   }
 }
 
-/* En pantallas grandes (desktop) no se muestra: ya está el botón verde */
 @media (min-width: 992px) {
   .floating-wpp {
     display: none !important;
   }
 }
 
-
-
-/* === Menú estilo app de pedidos === */
+/* === Menú estilo app actual === */
 .menu-category-strip {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-/* “pastillas” de categoría en mobile */
 .menu-category-pill {
   display: flex;
   align-items: center;
@@ -158,21 +149,6 @@ button:focus-visible {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* circulito con inicial de la categoría */
-.menu-cat-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #ff4b4b;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-/* icono + / - */
 .menu-cat-icon {
   width: 26px;
   height: 26px;
@@ -186,7 +162,6 @@ button:focus-visible {
   background-color: #fff;
 }
 
-/* tarjetas de producto dentro de cada categoría */
 .menu-product-card {
   border: none;
   border-radius: 12px;
@@ -198,7 +173,6 @@ button:focus-visible {
   }
 }
 
-/* Animación del despliegue de productos en mobile */
 .menu-category-collapse {
   max-height: 0;
   overflow: hidden;
@@ -207,11 +181,11 @@ button:focus-visible {
 }
 
 .menu-category-collapse.show {
-  max-height: 1000px; /* suficiente para varias cards */
+  max-height: 1000px;
   opacity: 1;
 }
 
-/* (Si ya tenías estas clases, podés fusionar estilos) */
+/* Hover extra */
 .menu-category-pill {
   width: 100%;
   border: none;
@@ -233,42 +207,86 @@ button:focus-visible {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
 }
 
-.menu-category-pill-active {
-  background: #ffe1e1;
-}
-
 .menu-cat-icon {
   font-weight: bold;
   font-size: 1.2rem;
 }
 
-/* ================================
-   FIX VISUAL iOS / Safari / Mobile
-   Forzar texto e íconos en negro
-   ================================ */
-
-/* Títulos de categorías (los links que ahora se ven azules) */
+/* iOS Fix */
 .menu-category-pill span {
   color: #000 !important;
 }
 
-/* Nombre de categoría ("Pizzas", "Empanadas", etc.) */
 .menu-category-pill .fw-semibold {
   color: #000 !important;
 }
 
-/* Cantidad de productos */
 .menu-category-pill small {
   color: #444 !important;
 }
 
-/* Icono + / - */
 .menu-cat-icon {
   color: #000 !important;
   border-color: #ccc !important;
 }
 
-/* Cuando la categoría está activa (rosa) */
 .menu-category-pill-active {
   background-color: #ffe9e9 !important;
+}
+
+/* ============================================================
+   🔥 ESTILOS PREMIUM (Opción C — tipo Rappi / PedidosYa)
+   Estas reglas se agregan al final para sobrescribir lo anterior
+   ============================================================ */
+
+.menu-category-strip {
+  gap: 0.75rem;
+}
+
+/* Pastilla premium */
+.menu-category-pill {
+  position: relative;
+  border-radius: 999px;
+  padding: 0.85rem 1.1rem;
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.menu-category-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.menu-category-pill:active {
+  transform: scale(0.98);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+
+/* Activa con gradiente */
+.menu-category-pill-active {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b) !important;
+  box-shadow: 0 12px 32px rgba(248, 113, 113, 0.5) !important;
+  border-color: transparent !important;
+}
+
+/* Texto blanco cuando está activa */
+.menu-category-pill-active .fw-semibold,
+.menu-category-pill-active small {
+  color: #ffffff !important;
+}
+
+/* Icono premium */
+.menu-cat-icon {
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+.menu-category-pill-active .menu-cat-icon {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.7) !important;
+  color: #fff !important;
 }
