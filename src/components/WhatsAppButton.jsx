@@ -1,4 +1,3 @@
-// src/components/WhatsAppButton.jsx
 import { clientConfig } from "../config/clientConfig";
 
 export default function WhatsAppButton({ cart, total, customer, isClosed }) {
@@ -56,7 +55,7 @@ export default function WhatsAppButton({ cart, total, customer, isClosed }) {
     window.open(url, "_blank");
   };
 
-  // 👉 Barra roja (mobile): solo hace scroll a “Mi pedido”
+  // 👉 Barra roja (mobile/tablet): solo hace scroll a “Mi pedido” o al menú
   const handleClickMobile = () => {
     if (isClosed && clientConfig.horario?.enabled) return;
 
@@ -78,7 +77,7 @@ export default function WhatsAppButton({ cart, total, customer, isClosed }) {
 
   return (
     <>
-      {/* Botón verde: visible en TODAS las vistas, no fijo */}
+      {/* Botón verde: visible en todas las vistas (no fijo) */}
       <button
         className="btn btn-success w-100 btn-lg mb-3"
         onClick={handleClickDesktop}
@@ -87,43 +86,17 @@ export default function WhatsAppButton({ cart, total, customer, isClosed }) {
         {isClosed ? "Local cerrado" : "Enviar pedido por WhatsApp"}
       </button>
 
-      {/* Barra fija inferior SOLO en mobile */}
+      {/* Barra fija inferior: mobile + tablet (se oculta en desktop por CSS) */}
       <button
         type="button"
         onClick={handleClickMobile}
         disabled={isClosed}
-        className="d-md-none border-0"
-        style={{
-          position: "fixed",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1050,
-          backgroundColor: "#d63347",
-          color: "#fff",
-          padding: "12px 16px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          fontWeight: 600,
-          boxShadow: "0 -2px 8px rgba(0,0,0,0.25)",
-        }}
+        className="floating-wpp border-0"
       >
-        <span>
+        <span className="floating-wpp-label">
           {itemCount === 0 ? "Ver menú" : "Ver mi pedido"}
         </span>
-        <span
-          style={{
-            backgroundColor: "#fff",
-            color: "#333",
-            borderRadius: "999px",
-            padding: "4px 10px",
-            fontSize: "0.85rem",
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-          }}
-        >
+        <span className="floating-wpp-chip">
           <span role="img" aria-label="carrito">
             🧺
           </span>
