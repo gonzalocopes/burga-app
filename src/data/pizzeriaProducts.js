@@ -128,3 +128,34 @@ export const postres = [
     img: "/images/postres/helado.png",
   },
 ];
+
+
+// Agregados
+// Extras para pizzas
+export const extrasPizza = [
+  {
+    id: "extra-queso",
+    name: "Extra queso",
+    price: 800,
+    category: "Extras",
+  },
+  {
+    id: "extra-jamon",
+    name: "Jamón",
+    price: 1200,
+    category: "Extras",
+  },
+  {
+    id: "extra-salsa",
+    name: "Extra salsa",
+    price: 600,
+    category: "Extras",
+  },
+  {
+    id: "borde-relleno",
+    name: "Borde relleno",
+    price: 1500,
+    category: "Extras",
+  },
+];
+
