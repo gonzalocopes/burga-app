@@ -7,7 +7,9 @@ import Cart from "./components/Cart";
 import CheckoutForm from "./components/CheckoutForm";
 import WhatsAppButton from "./components/WhatsAppButton";
 import UpsellModal from "./components/UpsellModal";
-import { bebidas, postres } from "./data/pizzeriaProducts";
+// 👉 Usamos solo extrasPizza para el upsell
+import { extrasPizza } from "./data/pizzeriaProducts";
+
 import { clientConfig } from "./config/clientConfig";
 
 function App() {
@@ -25,7 +27,8 @@ function App() {
   const [isClosed, setIsClosed] = useState(false);
   const [lastProduct, setLastProduct] = useState(null);
 
-  const upsellItems = [...bebidas, ...postres];
+  // ⬇️ Ahora las sugerencias del modal son los extras de pizza
+  const upsellItems = extrasPizza;
 
   // 🔔 Horario
   useEffect(() => {
@@ -188,7 +191,7 @@ function App() {
       </footer>
 
       {/* 🧱 Separador solo mobile para que la barra roja no tape el footer */}
-      <div className="d-lg-none" style={{ height: "64px" }} />
+      <div className="d-md-none" style={{ height: "64px" }} />
 
       {/* Modal de sugerencias */}
       <UpsellModal
