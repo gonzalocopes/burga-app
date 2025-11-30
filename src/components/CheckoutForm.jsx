@@ -43,8 +43,8 @@ export default function CheckoutForm({ customer, onChange }) {
           <input
             type="text"
             className="form-control"
-            name="address"
-            value={customer.address}
+            name="address2"
+            value={customer.address2}
             onChange={handleChange}
             placeholder="Entre calle y calle"
           />
