@@ -15,7 +15,7 @@ export default function WhatsAppButton({ cart, total, customer, isClosed }) {
     lines.push("");
     lines.push("👤 Datos del cliente:");
     lines.push(`Nombre: ${customer.name || "-"}`);
-    lines.push(`Dirección: ${customer.address || "-"}`);
+    lines.push(`Dirección Y Numeracion: ${customer.address || "-"}`);
     lines.push(`Teléfono: ${customer.phone || "-"}`);
     lines.push(`Entrega: ${customer.deliveryMethod || "-"}`);
     lines.push(`Pago: ${customer.paymentMethod || "-"}`);

@@ -17,6 +17,7 @@ function App() {
   const [customer, setCustomer] = useState({
     name: "",
     address: "",
+    address2:"",
     phone: "",
     deliveryMethod: "Delivery",
     paymentMethod: "Efectivo",

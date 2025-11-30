@@ -3,7 +3,7 @@ export const clientConfig = {
   nombre: "Pizzería Don Pepe",          // Nombre del local
   tipo: "pizzeria",                     // pizzeria | hamburgueseria | heladeria | etc.
 
-  whatsapp: "+5491136424020",           // Teléfono del negocio (formato internacional)
+  whatsapp: "+5491162123307",           // Teléfono del negocio (formato internacional)
 
   logo: "/images/logopizza.png",    // Ruta dentro de /public (ej: public/images/logo-pizzeria.png)
 

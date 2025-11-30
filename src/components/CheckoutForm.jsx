@@ -28,20 +28,31 @@ export default function CheckoutForm({ customer, onChange }) {
 
         {/* Dirección */}
         <div className="mb-3">
-          <label className="form-label">Dirección (si es delivery)</label>
+          <label className="form-label">Dirección y Numeracion (si es delivery)</label>
           <input
             type="text"
             className="form-control"
             name="address"
             value={customer.address}
             onChange={handleChange}
-            placeholder="Calle, número, barrio"
+            placeholder="Calle, número"
+          />
+        </div>
+        <div className="mb-3">
+          <label className="form-label">Entre calles (si es delivery)</label>
+          <input
+            type="text"
+            className="form-control"
+            name="address"
+            value={customer.address}
+            onChange={handleChange}
+            placeholder="Entre calle y calle"
           />
         </div>
 
         {/* Teléfono */}
         <div className="mb-3">
-          <label className="form-label">Teléfono (opcional)</label>
+          <label className="form-label">Teléfono</label>
           <input
             type="text"
             className="form-control"
@@ -88,7 +99,7 @@ export default function CheckoutForm({ customer, onChange }) {
             className="form-control"
             name="comments"
             rows="3"
-            placeholder="Ej: sin cebolla, cortar en 8, traer cambio..."
+            placeholder="Ej: cortar en 8, traer cambio, etc..."
             value={customer.comments}
             onChange={handleChange}
           ></textarea>
