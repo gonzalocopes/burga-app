@@ -1,5 +1,6 @@
 // src/components/UpsellModal.jsx
 import { useState, useEffect } from "react";
+import { empanadas } from "../data/pizzeriaProducts";
 
 export default function UpsellModal({
   show,
@@ -9,20 +10,42 @@ export default function UpsellModal({
   lastProduct,
 }) {
   const [addedIds, setAddedIds] = useState([]);
+  const [selectionCount, setSelectionCount] = useState(0);
 
-  // cuando se abre el modal, reseteamos los "agregados"
   useEffect(() => {
     if (show) {
       setAddedIds([]);
+      setSelectionCount(0);
     }
   }, [show]);
 
   if (!show) return null;
 
-  // pequeño texto según el producto principal
   const productName = lastProduct?.name || "tu pedido";
-  const isPizza = lastProduct?.category === "Pizzas";
-  const icon = isPizza ? "🍕" : "🍽️";
+  const category = lastProduct?.category || "";
+  const nameLower = productName.toLowerCase();
+
+  const isEmpanadaMedia =
+    category === "Empanadas" && nameLower.includes("media docena");
+
+  const isEmpanadaDocena =
+    category === "Empanadas" &&
+    nameLower.includes("docena") &&
+    !nameLower.includes("media docena");
+
+  const isEmpanadaPack = isEmpanadaMedia || isEmpanadaDocena;
+  const maxSelection = isEmpanadaMedia ? 6 : isEmpanadaDocena ? 12 : null;
+
+  const isPizza = category === "Pizzas";
+  const icon = isEmpanadaPack ? "🥟" : isPizza ? "🍕" : "🥟";
+
+  const currentCount = isEmpanadaPack ? selectionCount : addedIds.length;
+  const reachedLimit =
+    maxSelection !== null && currentCount >= maxSelection;
+
+  // Para packs de empanadas, mostramos las empanadas individuales (sin las de pack)
+  const individualEmpanadas = empanadas.filter((e) => !e.upsell);
+  const itemsToShow = isEmpanadaPack ? individualEmpanadas : upsellItems;
 
   return (
     <div
@@ -35,7 +58,9 @@ export default function UpsellModal({
           {/* HEADER */}
           <div className="modal-header">
             <h5 className="modal-title">
-              ¿Le sumamos algo a tu pedido? {icon}
+              {isEmpanadaPack
+                ? "Elegí tus empanadas 🥟"
+                : `¿Le sumamos algo a tu pedido? ${icon}`}
             </h5>
             <button
               type="button"
@@ -47,22 +72,83 @@ export default function UpsellModal({
 
           {/* BODY */}
           <div className="modal-body upsell-scroll-area">
-            <p className="small text-muted mb-3">
-              Ya agregaste <strong>{productName}</strong>. Te dejamos algunas
-              sugerencias para acompañar:
-            </p>
+            {isEmpanadaPack ? (
+              <>
+                <p className="small text-muted mb-1">
+                  Estás armando <strong>{productName}</strong>.
+                </p>
+                <p className="small text-muted mb-3">
+                  Elegí hasta{" "}
+                  <strong>{maxSelection} empanadas</strong>. No vas a poder
+                  agregar más de ese número.
+                  <br />
+                  Seleccionaste{" "}
+                  <strong>
+                    {currentCount} de {maxSelection}
+                  </strong>
+                  .
+                </p>
+              </>
+            ) : (
+              <p className="small text-muted mb-3">
+                Te dejamos algunas sugerencias para acompañar:
+              </p>
+            )}
 
-            {upsellItems.length === 0 ? (
+            {itemsToShow.length === 0 ? (
               <p>No hay productos sugeridos.</p>
             ) : (
               <ul className="list-group">
-                {upsellItems.map((item) => {
-  const isAdded = addedIds.includes(item.id);
-  return (
-    <li
-      key={item.id}
-      className="list-group-item d-flex justify-content-between align-items-center"
-    >
+                {itemsToShow.map((item) => {
+                  if (isEmpanadaPack) {
+                    // 🥟 LÓGICA PARA PACKS DE EMPANADAS (media/docena)
+                    const disabled = reachedLimit;
+                    // Sufijo distinto para que no choque con las empanadas individuales
+                    const packIdSuffix = isEmpanadaMedia
+                      ? "-pack-media"
+                      : "-pack-docena";
+
+                    return (
+                      <li
+                        key={item.id + packIdSuffix}
+                        className="list-group-item d-flex justify-content-between align-items-center"
+                      >
+                        <div>
+                          <div className="fw-semibold">{item.name}</div>
+                          {/* En el pack las empanadas no suman precio */}
+                          <small className="text-muted">$0</small>
+                        </div>
+                        <button
+                          className="btn btn-sm btn-success"
+                          disabled={disabled}
+                          onClick={() => {
+                            if (reachedLimit) return;
+
+                            // Entrará al carrito como otro item distinto (id diferente y price 0)
+                            onAdd({
+                              ...item,
+                              id: item.id + packIdSuffix,
+                              price: 0,
+                            });
+
+                            setSelectionCount((prev) => prev + 1);
+                          }}
+                        >
+                          {reachedLimit ? "Límite alcanzado" : "Agregar"}
+                        </button>
+                      </li>
+                    );
+                  }
+
+                  // 🍕 LÓGICA PARA EXTRAS DE PIZZA (una sola vez por ítem)
+                  const isAdded = addedIds.includes(item.id);
+                  const disabled = isAdded;
+
+                  return (
+                    <li
+                      key={item.id}
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                    >
                       <div>
                         <div className="fw-semibold">{item.name}</div>
                         <small className="text-muted">${item.price}</small>
@@ -72,7 +158,7 @@ export default function UpsellModal({
                           "btn btn-sm " +
                           (isAdded ? "btn-outline-success" : "btn-success")
                         }
-                        disabled={isAdded}
+                        disabled={disabled}
                         onClick={() => {
                           if (!isAdded) {
                             onAdd(item);

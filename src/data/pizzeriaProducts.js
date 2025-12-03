@@ -1,5 +1,3 @@
-// src/data/pizzeriaProducts.js
-
 // PIZZAS
 export const pizzas = [
   {
@@ -24,23 +22,23 @@ export const pizzas = [
     category: "Pizzas",
     description: "Cebolla caramelizada, muzza y orégano.",
     price: 6000,
-    img:"/images/pizzas/fugazeta.jpg",
+    img: "/images/pizzas/fugazeta.jpg",
   },
-   {
+  {
     id: "pizza-calabresa",
     name: "Calabresa",
     category: "Pizzas",
     description: "Muzza, longaniza calabresa y aceitunas.",
     price: 6800,
-    img:"/images/pizzas/calabresa.png", 
+    img: "/images/pizzas/calabresa.png",
   },
-    {
+  {
     id: "pizza-cuatro quesos",
     name: "Cuatro Quesos",
     category: "Pizzas",
     description: "Muzza, roquefort, parmesano y provolone.",
     price: 7200,
-    img:"/images/pizzas/4quesos.avif",
+    img: "/images/pizzas/4quesos.avif",
   },
   // agregás más pizzas...
 ];
@@ -48,12 +46,22 @@ export const pizzas = [
 // EMPANADAS
 export const empanadas = [
   {
-    id: "emp-carne",
-    name: "Empanada de carne",
+    id: "emp-docena",
+    name: "Docena de empanadas",
     category: "Empanadas",
-    description: "Carne cortada a cuchillo, huevo y condimentos.",
-    price: 900,
-    img: "/images/empanadas/empanadacarne.png",
+    description: "12 empanadas a elección.",
+    price: 10800,
+    img: "/images/empanadas/doce.jpg",
+    upsell: true, // abre el modal
+  },
+  {
+    id: "emp-media-docena",
+    name: "Media docena de empanadas",
+    category: "Empanadas",
+    description: "6 empanadas a elección.",
+    price: 5400,
+    img: "/images/empanadas/media.png",
+    upsell: true, // abre el modal
   },
   {
     id: "emp-jyq",
@@ -63,7 +71,7 @@ export const empanadas = [
     price: 900,
     img: "/images/empanadas/empanada-jyq.png",
   },
-   {
+  {
     id: "emp-pollo",
     name: "Empanada de Pollo",
     category: "Empanadas",
@@ -71,7 +79,7 @@ export const empanadas = [
     price: 900,
     img: "/images/empanadas/empanadapollo.jpg",
   },
-   {
+  {
     id: "emp-atun",
     name: "Empanada de Atun",
     category: "Empanadas",
@@ -79,7 +87,7 @@ export const empanadas = [
     price: 900,
     img: "/images/empanadas/atun.png",
   },
-    {
+  {
     id: "emp-cyq",
     name: "Empanada de Cebolla y Queso",
     category: "Empanadas",
@@ -129,7 +137,6 @@ export const postres = [
   },
 ];
 
-
 // Agregados
 // Extras para pizzas
 export const extrasPizza = [
@@ -138,7 +145,8 @@ export const extrasPizza = [
     name: "Al Molde 🍕🟫",
     price: 0,
     category: "Extras",
-  },{
+  },
+  {
     id: "ala-piedra",
     name: "A la Piedra 🔥🍕",
     price: 0,
@@ -167,22 +175,23 @@ export const extrasPizza = [
     name: "Extra Albahaca fresca 🌿",
     price: 500,
     category: "Extras",
-  },{
+  },
+  {
     id: "anchoas",
     name: "Extra Anchoas 🍤 ",
     price: 1500,
     category: "Extras",
-  },{
+  },
+  {
     id: "huevo",
     name: "Extra Huevo 🍳",
     price: 1500,
     category: "Extras",
-  },{
+  },
+  {
     id: "cebolla",
     name: "Extra Cebolla 🧅",
     price: 1500,
     category: "Extras",
-  }
-
+  },
 ];
-

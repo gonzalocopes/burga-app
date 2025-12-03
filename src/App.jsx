@@ -96,13 +96,15 @@ function App() {
       "Combos",
     ];
 
-    const shouldOpenUpsell =
-      mainCategories.includes(product.category) && !fromUpsell;
+      const shouldOpenUpsell =
+    !fromUpsell &&
+    (mainCategories.includes(product.category) || product.upsell === true);
 
-    if (shouldOpenUpsell) {
-      setLastProduct(product);
-      setShowUpsell(true);
-    }
+  if (shouldOpenUpsell) {
+    setLastProduct(product);
+    setShowUpsell(true);
+  }
+
   };
 
   const removeFromCart = (id) => {

@@ -4,12 +4,69 @@ export default function WhatsAppButton({ cart, total, customer, isClosed }) {
   const buildMessage = () => {
     const lines = [];
 
+    const isPackFlavor = (item) =>
+      item.id.endsWith("-pack-media") || item.id.endsWith("-pack-docena");
+
+    // Packs principales de empanadas
+    const mediaPack = cart.find((item) => item.id === "emp-media-docena");
+    const mediaFlavors = cart.filter((item) =>
+      item.id.endsWith("-pack-media")
+    );
+
+    const docenaPack = cart.find((item) => item.id === "emp-docena");
+    const docenaFlavors = cart.filter((item) =>
+      item.id.endsWith("-pack-docena")
+    );
+
+    // Extras de pizzas (categoría Extras)
+    const pizzaExtras = cart.filter((item) => item.category === "Extras");
+
     lines.push("📦 Nuevo pedido:");
     lines.push("");
     lines.push("🍕 Detalle del pedido:");
+
+    // Productos normales (sin sabores de pack ni extras)
     cart.forEach((item) => {
+      // No mostramos los sabores de pack acá
+      if (isPackFlavor(item)) return;
+
+      // Tampoco mostramos los extras como producto común
+      if (item.category === "Extras") return;
+
       lines.push(`- ${item.qty}x ${item.name} ($${item.price} c/u)`);
     });
+
+    // 🥟 Detalle de Media docena
+    if (mediaPack && mediaFlavors.length > 0) {
+      const detail = mediaFlavors
+        .map((item) => `${item.qty}x ${item.name}`)
+        .join(", ");
+
+      lines.push("");
+      lines.push(`🥟 Detalle ${mediaPack.name}:`);
+      lines.push(detail);
+    }
+
+    // 🥟 Detalle de Docena
+    if (docenaPack && docenaFlavors.length > 0) {
+      const detail = docenaFlavors
+        .map((item) => `${item.qty}x ${item.name}`)
+        .join(", ");
+
+      lines.push("");
+      lines.push(`🥟 Detalle ${docenaPack.name}:`);
+      lines.push(detail);
+    }
+
+    // ➕ Detalle de agregados para pizzas
+    if (pizzaExtras.length > 0) {
+      lines.push("");
+      lines.push("➕ Agregados para pizzas:");
+      pizzaExtras.forEach((item) => {
+        lines.push(`- ${item.qty}x ${item.name} ($${item.price} c/u)`);
+      });
+    }
+
     lines.push("");
     lines.push(`💰 Total: $${total}`);
     lines.push("");
