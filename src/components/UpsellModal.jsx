@@ -7,15 +7,18 @@ export default function UpsellModal({
   onClose,
   upsellItems,
   onAdd,
+  onRemoveOne,   // 👈 NUEVO: para restar 1 del carrito
   lastProduct,
 }) {
-  const [addedIds, setAddedIds] = useState([]);
-  const [selectionCount, setSelectionCount] = useState(0);
+  const [addedIds, setAddedIds] = useState([]); // para extras normales (pizzas)
+  const [selectionCount, setSelectionCount] = useState(0); // total en pack
+  const [flavorCounts, setFlavorCounts] = useState({}); // cantidad por sabor en pack
 
   useEffect(() => {
     if (show) {
       setAddedIds([]);
       setSelectionCount(0);
+      setFlavorCounts({});
     }
   }, [show]);
 
@@ -43,7 +46,7 @@ export default function UpsellModal({
   const reachedLimit =
     maxSelection !== null && currentCount >= maxSelection;
 
-  // Para packs de empanadas, mostramos las empanadas individuales (sin las de pack)
+  // Para packs de empanadas mostramos las empanadas individuales (sin las de pack)
   const individualEmpanadas = empanadas.filter((e) => !e.upsell);
   const itemsToShow = isEmpanadaPack ? individualEmpanadas : upsellItems;
 
@@ -102,40 +105,77 @@ export default function UpsellModal({
                 {itemsToShow.map((item) => {
                   if (isEmpanadaPack) {
                     // 🥟 LÓGICA PARA PACKS DE EMPANADAS (media/docena)
-                    const disabled = reachedLimit;
-                    // Sufijo distinto para que no choque con las empanadas individuales
                     const packIdSuffix = isEmpanadaMedia
                       ? "-pack-media"
                       : "-pack-docena";
+                    const flavorKey = item.id + packIdSuffix;
+                    const flavorQty = flavorCounts[flavorKey] || 0;
+                    const canDecrease = flavorQty > 0;
+                    const canIncrease = !reachedLimit;
 
                     return (
                       <li
-                        key={item.id + packIdSuffix}
+                        key={flavorKey}
                         className="list-group-item d-flex justify-content-between align-items-center"
                       >
                         <div>
                           <div className="fw-semibold">{item.name}</div>
-                          {/* En el pack las empanadas no suman precio */}
-                          <small className="text-muted">$0</small>
+                          <small className="text-muted">
+                            Cantidad: {flavorQty}
+                          </small>
                         </div>
-                        <button
-                          className="btn btn-sm btn-success"
-                          disabled={disabled}
-                          onClick={() => {
-                            if (reachedLimit) return;
+                        <div className="d-flex gap-2">
+                          {/* BOTÓN - */}
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-danger"
+                            disabled={!canDecrease}
+                            onClick={() => {
+                              if (!canDecrease) return;
+                              // avisar al padre para sacar 1 del carrito
+                              if (onRemoveOne) {
+                                onRemoveOne(flavorKey);
+                              }
+                              setSelectionCount((prev) =>
+                                prev > 0 ? prev - 1 : 0
+                              );
+                              setFlavorCounts((prev) => ({
+                                ...prev,
+                                [flavorKey]:
+                                  (prev[flavorKey] || 0) > 0
+                                    ? prev[flavorKey] - 1
+                                    : 0,
+                              }));
+                            }}
+                          >
+                            −
+                          </button>
 
-                            // Entrará al carrito como otro item distinto (id diferente y price 0)
-                            onAdd({
-                              ...item,
-                              id: item.id + packIdSuffix,
-                              price: 0,
-                            });
+                          {/* BOTÓN + */}
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-success"
+                            disabled={!canIncrease}
+                            onClick={() => {
+                              if (reachedLimit) return;
 
-                            setSelectionCount((prev) => prev + 1);
-                          }}
-                        >
-                          {reachedLimit ? "Límite alcanzado" : "Agregar"}
-                        </button>
+                              // Entra al carrito como item 0$ con ID especial
+                              onAdd({
+                                ...item,
+                                id: flavorKey,
+                                price: 0,
+                              });
+
+                              setSelectionCount((prev) => prev + 1);
+                              setFlavorCounts((prev) => ({
+                                ...prev,
+                                [flavorKey]: (prev[flavorKey] || 0) + 1,
+                              }));
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
                       </li>
                     );
                   }
