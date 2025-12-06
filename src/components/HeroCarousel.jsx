@@ -10,7 +10,7 @@ export default function HeroCarousel() {
     "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg";
 
   // Textos con fallback: si no hay en config, usamos los que ya tenías
-  const slide1Title = hero?.slides?.[0]?.titulo || `${nombre} 🍕`;
+  const slide1Title = hero?.slides?.[0]?.titulo || `${nombre} `;
   const slide1Subtitle =
     hero?.slides?.[0]?.subtitulo ||
     "Pedí tus hamburgesas favoritas y mandá el pedido por WhatsApp.";
